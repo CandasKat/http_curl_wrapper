@@ -130,3 +130,40 @@ TEST(RequestTest, sendPatch)
     ASSERT_TRUE(request.isSessionIdValid());
     ASSERT_NE(response->getBody().find("hello world"), std::string::npos);
 }
+
+TEST(RequestTest, setUrl)
+{
+    CurlSession session;
+    CurlCookies cookies;
+    session.setSessionId("1234567890");
+    CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
+    request.setUrl("https://httpbin.org/post");
+    request.setBody("hello world");
+    request.setHeader("accept: application/json");
+    std::unique_ptr<CurlResponse> response = request.sendPost("hello world");
+    ASSERT_EQ(request.getUrl(), "https://httpbin.org/post");
+}
+
+TEST(RequestTest, setBody)
+{
+    CurlSession session;
+    CurlCookies cookies;
+    session.setSessionId("1234567890");
+    CurlRequest request(session, "https://httpbin.org/post", "", cookies, 10);
+    request.setBody("hello world", 11);
+    request.setHeader("accept: application/json");
+    std::unique_ptr<CurlResponse> response = request.sendPost("hello world");
+    ASSERT_EQ(request.getBody(), "hello world");
+}
+
+TEST(RequestTest, setTimeout)
+{
+    CurlSession session;
+    CurlCookies cookies;
+    session.setSessionId("1234567890");
+    CurlRequest request(session, "https://httpbin.org/post", "", cookies, 10);
+    request.setTimeout(20);
+    request.setHeader("accept: application/json");
+    std::unique_ptr<CurlResponse> response = request.sendPost("hello world");
+    ASSERT_EQ(request.getUrl(), "https://httpbin.org/post");
+}

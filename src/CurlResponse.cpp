@@ -28,8 +28,7 @@ json CurlResponse::getHeaders()
     }
     catch (json::parse_error &e)
     {
-        std::cout << "parse error: " << e.what() << std::endl;
-        return json::object();
+        throw std::runtime_error("Failed to parse headers: " + std::string(e.what()));
     }
 }
 
@@ -47,7 +46,7 @@ std::string CurlResponse::setHeadersToParse(const std::string& headersToParse)
 {
     std::istringstream responseStream(headersToParse);
     std::string line;
-    std::string toJsonHeaders = "{";
+    json toJsonHeaders;
     const char badChar = '\r';
     while (std::getline(responseStream, line)) {
         size_t separator = line.find(':');
@@ -63,10 +62,8 @@ std::string CurlResponse::setHeadersToParse(const std::string& headersToParse)
             if (value.back() == badChar) {
                 value.pop_back();
             }
-            toJsonHeaders += "\n\"" + key + "\": \"" + value + "\",";
+            toJsonHeaders[key] = value;
         }
     }
-    toJsonHeaders.back() = '\n';
-    toJsonHeaders += "}";
-    return toJsonHeaders;
+    return toJsonHeaders.dump();
 }

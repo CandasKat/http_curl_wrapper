@@ -16,6 +16,9 @@ CurlCookies::~CurlCookies()
 
 void CurlCookies::setCookie(const std::string& key, const std::string& value)
 {
+    if (key.empty() || value.empty()) {
+        throw std::invalid_argument("Key and value cannot be empty");
+    }
     cookies[key] = value;
 }
 

@@ -28,7 +28,10 @@ CurlRequest::CurlRequest(CurlSession& session, std::string url, std::string head
 
 CurlRequest::~CurlRequest()
 {
-    curl_easy_reset(curl);
+    if (headerList != nullptr) {
+        curl_slist_free_all(headerList);
+        headerList = nullptr;
+    }
 }
 
 std::unique_ptr<CurlResponse> CurlRequest::sendGet()
@@ -256,21 +259,30 @@ void CurlRequest::setUrl(std::string newUrl)
 
 void CurlRequest::setHeader(std::string newHeader)
 {
-    this->header = std::move(newHeader);
-    struct curl_slist *headers = nullptr;
-    headers = curl_slist_append(headers, header.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+    if (headerList != nullptr) {
+        curl_slist_free_all(headerList);
+        headerList = nullptr;
+    }
+    headerList = curl_slist_append(headerList, newHeader.c_str());
+    if (headerList == nullptr) {
+        throw std::runtime_error("Failed to append to header list");
+    }
+    if (curl != nullptr) {
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerList);
+    }
 }
 
 void CurlRequest::setBody(std::string newBody)
 {
-    this->body = std::move(newBody);
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
+    this->body = newBody;
+    if (curl != nullptr) {
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
+    }
 }
 
 void CurlRequest::setBody(std::string newBody, size_t size)
 {
-    this->body = std::move(newBody);
+    this->body = newBody;
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, size);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
 }
@@ -284,7 +296,19 @@ void CurlRequest::setTimeout(int newTimeout)
 void CurlRequest::setCookies(const CurlCookies& newCookies)
 {
     this->cookies = newCookies;
-    curl_easy_setopt(curl, CURLOPT_COOKIE, cookies.getCookies().dump().c_str());
+    if (curl != nullptr) {
+        curl_easy_setopt(curl, CURLOPT_COOKIE, cookies.getCookies().dump().c_str());
+    }
+}
+
+std::string CurlRequest::getUrl()
+{
+    return url;
+}
+
+std::string CurlRequest::getBody()
+{
+    return body;
 }
 
 bool CurlRequest::isSessionIdValid()

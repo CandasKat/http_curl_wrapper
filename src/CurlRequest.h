@@ -25,6 +25,9 @@ public:
     void setTimeout(int newTimeout);
     void setCookies(const CurlCookies& cookies);
 
+    std::string getUrl();
+    std::string getBody();
+
     std::unique_ptr<CurlResponse> sendGet();
     std::unique_ptr<CurlResponse> sendPost(std::string body);
     std::unique_ptr<CurlResponse> sendPut(std::string body);
@@ -44,6 +47,7 @@ private:
     std::string body;
     CurlCookies cookies;
     int timeout;
+    struct curl_slist *headerList = nullptr;
     static size_t WriteCallBack(void *contents, size_t size, size_t nmemb, void *userp);
 
 };

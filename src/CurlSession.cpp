@@ -9,7 +9,7 @@ CurlSession::CurlSession()
     curl = curl_easy_init();
     if (!curl)
     {
-        throw CurlException("Failed to initialize curl");
+        throw CurlException("Failed to initialize curl: " + std::string(curl_easy_strerror(curl_easy_getinfo(curl, CURLINFO_OS_ERRNO, NULL))));
     }
 }
 
@@ -20,6 +20,9 @@ CurlSession::~CurlSession()
 
 void CurlSession::setSessionId(const std::string& newSessionId)
 {
+    if (newSessionId.empty()) {
+        throw std::invalid_argument("Session ID cannot be empty");
+    }
     this->sessionId = newSessionId;
     cookies.setCookie("SessionId", sessionId);
 }
