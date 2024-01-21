@@ -12,10 +12,11 @@
 #include "CurlResponse.h"
 #include "CurlException.h"
 #include "CurlCookies.h"
+#include "CurlSession.h"
 
 class CurlRequest {
 public:
-    CurlRequest(std::string url, std::string header, const CurlCookies& cookies, int timeout);
+    CurlRequest(CurlSession& session, std::string url, std::string header, const CurlCookies& cookies, int timeout);
     ~CurlRequest();
     void setUrl(std::string newUrl);
     void setHeader(std::string newHeader);
@@ -32,7 +33,10 @@ public:
     std::unique_ptr<CurlResponse> sendOptions();
     std::unique_ptr<CurlResponse> sendPatch(std::string body);
 
+    bool isSessionIdValid();
+
 private:
+    CurlSession session;
     CURL *curl;
     std::string url;
     std::string method;

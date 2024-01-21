@@ -555,6 +555,13 @@ build src/CMakeFiles/http_curl_wrapper_lib.dir/CurlResponse.cpp.o: CXX_COMPILER_
   OBJECT_DIR = src/CMakeFiles/http_curl_wrapper_lib.dir
   OBJECT_FILE_DIR = src/CMakeFiles/http_curl_wrapper_lib.dir
 
+build src/CMakeFiles/http_curl_wrapper_lib.dir/CurlSession.cpp.o: CXX_COMPILER__http_curl_wrapper_lib_unscanned_Debug /home/candas/CLionProjects/http-curl-wrapper/src/CurlSession.cpp || cmake_object_order_depends_target_http_curl_wrapper_lib
+  DEP_FILE = src/CMakeFiles/http_curl_wrapper_lib.dir/CurlSession.cpp.o.d
+  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
+  INCLUDES = -I/home/candas/CLionProjects/http-curl-wrapper/src
+  OBJECT_DIR = src/CMakeFiles/http_curl_wrapper_lib.dir
+  OBJECT_FILE_DIR = src/CMakeFiles/http_curl_wrapper_lib.dir
+
 build src/CMakeFiles/http_curl_wrapper_lib.dir/main.cpp.o: CXX_COMPILER__http_curl_wrapper_lib_unscanned_Debug /home/candas/CLionProjects/http-curl-wrapper/src/main.cpp || cmake_object_order_depends_target_http_curl_wrapper_lib
   DEP_FILE = src/CMakeFiles/http_curl_wrapper_lib.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
@@ -570,7 +577,7 @@ build src/CMakeFiles/http_curl_wrapper_lib.dir/main.cpp.o: CXX_COMPILER__http_cu
 #############################################
 # Link the static library src/libhttp_curl_wrapper_lib.a
 
-build src/libhttp_curl_wrapper_lib.a: CXX_STATIC_LIBRARY_LINKER__http_curl_wrapper_lib_Debug src/CMakeFiles/http_curl_wrapper_lib.dir/CurlCookies.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlException.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlRequest.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlResponse.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/main.cpp.o
+build src/libhttp_curl_wrapper_lib.a: CXX_STATIC_LIBRARY_LINKER__http_curl_wrapper_lib_Debug src/CMakeFiles/http_curl_wrapper_lib.dir/CurlCookies.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlException.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlRequest.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlResponse.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/CurlSession.cpp.o src/CMakeFiles/http_curl_wrapper_lib.dir/main.cpp.o
   LANGUAGE_COMPILE_FLAGS = -g
   OBJECT_DIR = src/CMakeFiles/http_curl_wrapper_lib.dir
   POST_BUILD = :
@@ -615,6 +622,13 @@ build src/CMakeFiles/http_curl_wrapper.dir/CurlResponse.cpp.o: CXX_COMPILER__htt
   OBJECT_DIR = src/CMakeFiles/http_curl_wrapper.dir
   OBJECT_FILE_DIR = src/CMakeFiles/http_curl_wrapper.dir
 
+build src/CMakeFiles/http_curl_wrapper.dir/CurlSession.cpp.o: CXX_COMPILER__http_curl_wrapper_unscanned_Debug /home/candas/CLionProjects/http-curl-wrapper/src/CurlSession.cpp || cmake_object_order_depends_target_http_curl_wrapper
+  DEP_FILE = src/CMakeFiles/http_curl_wrapper.dir/CurlSession.cpp.o.d
+  FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
+  INCLUDES = -I/home/candas/CLionProjects/http-curl-wrapper/src
+  OBJECT_DIR = src/CMakeFiles/http_curl_wrapper.dir
+  OBJECT_FILE_DIR = src/CMakeFiles/http_curl_wrapper.dir
+
 build src/CMakeFiles/http_curl_wrapper.dir/main.cpp.o: CXX_COMPILER__http_curl_wrapper_unscanned_Debug /home/candas/CLionProjects/http-curl-wrapper/src/main.cpp || cmake_object_order_depends_target_http_curl_wrapper
   DEP_FILE = src/CMakeFiles/http_curl_wrapper.dir/main.cpp.o.d
   FLAGS = -g -std=gnu++23 -fdiagnostics-color=always
@@ -630,7 +644,7 @@ build src/CMakeFiles/http_curl_wrapper.dir/main.cpp.o: CXX_COMPILER__http_curl_w
 #############################################
 # Link the executable src/http_curl_wrapper
 
-build src/http_curl_wrapper: CXX_EXECUTABLE_LINKER__http_curl_wrapper_Debug src/CMakeFiles/http_curl_wrapper.dir/CurlCookies.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlException.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlRequest.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlResponse.cpp.o src/CMakeFiles/http_curl_wrapper.dir/main.cpp.o
+build src/http_curl_wrapper: CXX_EXECUTABLE_LINKER__http_curl_wrapper_Debug src/CMakeFiles/http_curl_wrapper.dir/CurlCookies.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlException.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlRequest.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlResponse.cpp.o src/CMakeFiles/http_curl_wrapper.dir/CurlSession.cpp.o src/CMakeFiles/http_curl_wrapper.dir/main.cpp.o
   FLAGS = -g
   OBJECT_DIR = src/CMakeFiles/http_curl_wrapper.dir
   POST_BUILD = :

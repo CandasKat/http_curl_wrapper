@@ -16,26 +16,27 @@ size_t CurlRequest::WriteCallBack(void *contents, size_t size, size_t nmemb, voi
     return real_size;
 }
 
-CurlRequest::CurlRequest(std::string url, std::string header, const CurlCookies& cookies, int timeout)
+CurlRequest::CurlRequest(CurlSession& session, std::string url, std::string header, const CurlCookies& cookies, int timeout)
 {
+    this->session = session;
     this->url = std::move(url);
     this->header = std::move(header);
     this->cookies = cookies;
     this->timeout = timeout;
-    curl = curl_easy_init();
-    if (!curl)
-    {
-        throw CurlException("curl_easy_init() failed");
-    }
+    this->curl = session.getCurl();
 }
 
 CurlRequest::~CurlRequest()
 {
-    curl_easy_cleanup(curl);
+    curl_easy_reset(curl);
 }
 
 std::unique_ptr<CurlResponse> CurlRequest::sendGet()
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -60,6 +61,10 @@ std::unique_ptr<CurlResponse> CurlRequest::sendGet()
 
 std::unique_ptr<CurlResponse> CurlRequest::sendHead()
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -86,6 +91,10 @@ std::unique_ptr<CurlResponse> CurlRequest::sendHead()
 
 std::unique_ptr<CurlResponse> CurlRequest::sendOptions()
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -111,6 +120,10 @@ std::unique_ptr<CurlResponse> CurlRequest::sendOptions()
 
 std::unique_ptr<CurlResponse> CurlRequest::sendPost(std::string newBody)
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -141,6 +154,10 @@ std::unique_ptr<CurlResponse> CurlRequest::sendPost(std::string newBody)
 
 std::unique_ptr<CurlResponse> CurlRequest::sendPut(std::string newBody)
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -171,6 +188,10 @@ std::unique_ptr<CurlResponse> CurlRequest::sendPut(std::string newBody)
 
 std::unique_ptr<CurlResponse> CurlRequest::sendPatch(std::string newBody)
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -201,6 +222,10 @@ std::unique_ptr<CurlResponse> CurlRequest::sendPatch(std::string newBody)
 
 std::unique_ptr<CurlResponse> CurlRequest::sendDelete()
 {
+    if (!isSessionIdValid())
+    {
+        throw CurlException("Session id is not valid");
+    }
     std::string response_string;
     std::string response_headers;
     long response_code;
@@ -260,4 +285,9 @@ void CurlRequest::setCookies(const CurlCookies& newCookies)
 {
     this->cookies = newCookies;
     curl_easy_setopt(curl, CURLOPT_COOKIE, cookies.getCookies().dump().c_str());
+}
+
+bool CurlRequest::isSessionIdValid()
+{
+    return !session.getSessionId().empty();
 }
