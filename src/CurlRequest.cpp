@@ -16,12 +16,11 @@ size_t CurlRequest::WriteCallBack(void *contents, size_t size, size_t nmemb, voi
     return real_size;
 }
 
-CurlRequest::CurlRequest(std::string url, std::string header, const CurlCookies& cookies, std::string body, int timeout)
+CurlRequest::CurlRequest(std::string url, std::string header, const CurlCookies& cookies, int timeout)
 {
     this->url = std::move(url);
     this->header = std::move(header);
     this->cookies = cookies;
-    this->body = std::move(body);
     this->timeout = timeout;
     curl = curl_easy_init();
     if (!curl)
@@ -42,12 +41,9 @@ std::unique_ptr<CurlResponse> CurlRequest::sendGet()
     long response_code;
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
     curl_easy_setopt(curl, CURLOPT_HTTPGET, 1L);
+    curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallBack);
-    if (!header.empty())
-    {
-        curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
-        curl_easy_setopt(curl, CURLOPT_HEADERDATA, &response_headers);
-    }
+    curl_easy_setopt(curl, CURLOPT_HEADERDATA, &response_headers);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
     CURLcode res = curl_easy_perform(curl);
     if (res != CURLE_OK)
@@ -66,11 +62,8 @@ std::unique_ptr<CurlResponse> CurlRequest::sendHead()
 {
     std::string response_string;
     std::string response_headers;
-    struct curl_slist *headers = nullptr;
     long response_code;
-    headers = curl_slist_append(headers, "accept: application/json");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallBack);
@@ -95,11 +88,8 @@ std::unique_ptr<CurlResponse> CurlRequest::sendOptions()
 {
     std::string response_string;
     std::string response_headers;
-    struct curl_slist *headers = nullptr;
     long response_code;
-    headers = curl_slist_append(headers, "accept: application/json");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "OPTIONS");
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallBack);
@@ -119,15 +109,16 @@ std::unique_ptr<CurlResponse> CurlRequest::sendOptions()
     }
 }
 
-std::unique_ptr<CurlResponse> CurlRequest::sendPost()
+std::unique_ptr<CurlResponse> CurlRequest::sendPost(std::string newBody)
 {
     std::string response_string;
     std::string response_headers;
-    struct curl_slist *headers = nullptr;
     long response_code;
-    headers = curl_slist_append(headers, "accept: application/json");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+    if (!newBody.empty())
+    {
+        body = std::move(newBody);
+    }
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
     curl_easy_setopt(curl, CURLOPT_POST, 1L);
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
@@ -148,15 +139,16 @@ std::unique_ptr<CurlResponse> CurlRequest::sendPost()
     }
 }
 
-std::unique_ptr<CurlResponse> CurlRequest::sendPut()
+std::unique_ptr<CurlResponse> CurlRequest::sendPut(std::string newBody)
 {
     std::string response_string;
     std::string response_headers;
-    struct curl_slist *headers = nullptr;
     long response_code;
-    headers = curl_slist_append(headers, "accept: application/json");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
+    if (!newBody.empty())
+    {
+        body = std::move(newBody);
+    }
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
@@ -177,16 +169,17 @@ std::unique_ptr<CurlResponse> CurlRequest::sendPut()
     }
 }
 
-std::unique_ptr<CurlResponse> CurlRequest::sendPatch()
+std::unique_ptr<CurlResponse> CurlRequest::sendPatch(std::string newBody)
 {
     std::string response_string;
     std::string response_headers;
-    struct curl_slist *headers = nullptr;
     long response_code;
-    headers = curl_slist_append(headers, "accept: application/json");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+    if (!newBody.empty())
+    {
+        body = std::move(newBody);
+    }
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallBack);
@@ -210,11 +203,8 @@ std::unique_ptr<CurlResponse> CurlRequest::sendDelete()
 {
     std::string response_string;
     std::string response_headers;
-    struct curl_slist *headers = nullptr;
     long response_code;
-    headers = curl_slist_append(headers, "accept: application/json");
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
     curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
     curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallBack);
@@ -242,25 +232,32 @@ void CurlRequest::setUrl(std::string newUrl)
 void CurlRequest::setHeader(std::string newHeader)
 {
     this->header = std::move(newHeader);
+    struct curl_slist *headers = nullptr;
+    headers = curl_slist_append(headers, header.c_str());
+    curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 }
 
 void CurlRequest::setBody(std::string newBody)
 {
     this->body = std::move(newBody);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
 }
 
 void CurlRequest::setBody(std::string newBody, size_t size)
 {
     this->body = std::move(newBody);
     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, size);
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, body.c_str());
 }
 
 void CurlRequest::setTimeout(int newTimeout)
 {
     this->timeout = newTimeout;
+    curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeout);
 }
 
 void CurlRequest::setCookies(const CurlCookies& newCookies)
 {
     this->cookies = newCookies;
+    curl_easy_setopt(curl, CURLOPT_COOKIE, cookies.getCookies().dump().c_str());
 }

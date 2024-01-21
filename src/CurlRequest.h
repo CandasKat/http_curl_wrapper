@@ -15,7 +15,7 @@
 
 class CurlRequest {
 public:
-    CurlRequest(std::string url, std::string header, const CurlCookies& cookies, std::string body, int timeout);
+    CurlRequest(std::string url, std::string header, const CurlCookies& cookies, int timeout);
     ~CurlRequest();
     void setUrl(std::string newUrl);
     void setHeader(std::string newHeader);
@@ -25,12 +25,12 @@ public:
     void setCookies(const CurlCookies& cookies);
 
     std::unique_ptr<CurlResponse> sendGet();
-    std::unique_ptr<CurlResponse> sendPost();
-    std::unique_ptr<CurlResponse> sendPut();
+    std::unique_ptr<CurlResponse> sendPost(std::string body);
+    std::unique_ptr<CurlResponse> sendPut(std::string body);
     std::unique_ptr<CurlResponse> sendDelete();
     std::unique_ptr<CurlResponse> sendHead();
     std::unique_ptr<CurlResponse> sendOptions();
-    std::unique_ptr<CurlResponse> sendPatch();
+    std::unique_ptr<CurlResponse> sendPatch(std::string body);
 
 private:
     CURL *curl;
