@@ -1,5 +1,0 @@
-if(EXISTS "/home/candas/CLionProjects/http-curl-wrapper/cmake-build-debug/http_curl_wrapper_tst[1]_tests.cmake")
-  include("/home/candas/CLionProjects/http-curl-wrapper/cmake-build-debug/http_curl_wrapper_tst[1]_tests.cmake")
-else()
-  add_test(http_curl_wrapper_tst_NOT_BUILT http_curl_wrapper_tst_NOT_BUILT)
-endif()
