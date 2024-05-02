@@ -39,7 +39,7 @@ public:
     bool isSessionIdValid();
 
 private:
-    CurlSession session;
+    CurlSession &session;
     CURL *curl;
     std::string url;
     std::string method;

@@ -17,13 +17,13 @@ size_t CurlRequest::WriteCallBack(void *contents, size_t size, size_t nmemb, voi
 }
 
 CurlRequest::CurlRequest(CurlSession& session, std::string url, std::string header, const CurlCookies& cookies, int timeout)
+        : session(session),
+          url(std::move(url)),
+          header(std::move(header)),
+          cookies(cookies),
+          timeout(timeout),
+          curl(session.getCurl())
 {
-    this->session = session;
-    this->url = std::move(url);
-    this->header = std::move(header);
-    this->cookies = cookies;
-    this->timeout = timeout;
-    this->curl = session.getCurl();
 }
 
 CurlRequest::~CurlRequest()

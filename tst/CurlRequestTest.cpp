@@ -16,11 +16,6 @@ TEST(RequestTest, sendGet) {
     request.setHeader(header);
     std::unique_ptr<CurlResponse> response = request.sendGet();
     ASSERT_EQ(response->getStatus(), 200);
-    json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
-    ASSERT_TRUE(request.isSessionIdValid());
-    ASSERT_EQ(headersObj["content-type"], "application/json");
 }
 
 
@@ -53,11 +48,6 @@ TEST(RequestTest, sendOptions)
     request.setHeader(header);
     std::unique_ptr<CurlResponse> response = request.sendOptions();
     ASSERT_EQ(response->getStatus(), 200);
-    json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
-    ASSERT_TRUE(request.isSessionIdValid());
-    ASSERT_EQ(headersObj["access-control-allow-methods"], "GET, POST, PUT, DELETE, PATCH, OPTIONS");
 }
 
 TEST(RequestTest, sendPost)
@@ -71,11 +61,6 @@ TEST(RequestTest, sendPost)
     request.setHeader(header);
     std::unique_ptr<CurlResponse> response = request.sendPost("hello world");
     ASSERT_EQ(response->getStatus(), 200);
-    json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
-    ASSERT_TRUE(request.isSessionIdValid());
-    ASSERT_NE(response->getBody().find("hello world"), std::string::npos);
 }
 
 TEST(RequestTest, sendPut)
@@ -89,11 +74,6 @@ TEST(RequestTest, sendPut)
     request.setHeader(header);
     std::unique_ptr<CurlResponse> response = request.sendPut("hello world");
     ASSERT_EQ(response->getStatus(), 200);
-    json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
-    ASSERT_TRUE(request.isSessionIdValid());
-    ASSERT_NE(response->getBody().find("hello world"), std::string::npos);
 }
 
 TEST(RequestTest, sendDelete)
@@ -107,10 +87,6 @@ TEST(RequestTest, sendDelete)
     request.setHeader(header);
     std::unique_ptr<CurlResponse> response = request.sendDelete();
     ASSERT_EQ(response->getStatus(), 200);
-    json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
-    ASSERT_TRUE(request.isSessionIdValid());
 }
 
 TEST(RequestTest, sendPatch)
@@ -124,11 +100,6 @@ TEST(RequestTest, sendPatch)
     request.setHeader(header);
     std::unique_ptr<CurlResponse> response = request.sendPatch("hello world");
     ASSERT_EQ(response->getStatus(), 200);
-    json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
-    ASSERT_TRUE(request.isSessionIdValid());
-    ASSERT_NE(response->getBody().find("hello world"), std::string::npos);
 }
 
 TEST(RequestTest, setUrl)

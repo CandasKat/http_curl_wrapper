@@ -13,6 +13,7 @@ using json = nlohmann::json;
 class CurlResponse {
 public:
     CurlResponse(int status, const std::string& headers, std::string body);
+    ~CurlResponse() = default;
     [[nodiscard]] int getStatus() const;
     json getHeaders();
     const std::string &getHeadersString();
