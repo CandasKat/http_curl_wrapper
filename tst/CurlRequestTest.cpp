@@ -6,6 +6,33 @@
 #include "../src/CurlRequest.h"
 
 
+// Unit tests
+
+// Test for CurlSession::setSessionId
+TEST(UnitTest, testSetSessionId) {
+    CurlSession session;
+    session.setSessionId("1234567890");
+    ASSERT_EQ(session.getSessionId(), "1234567890");
+}
+
+// Test for CurlRequest::getUrl
+TEST(UnitTest, testGetUrl) {
+    CurlSession session;
+    CurlCookies cookies;
+    CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
+    ASSERT_EQ(request.getUrl(), "https://httpbin.org/get");
+}
+
+// Test for CurlCookies::setCookie
+TEST(UnitTest, testSetCookie) {
+    CurlCookies cookies;
+    cookies.setCookie("freeform", "value1");
+    ASSERT_EQ(cookies.getCookies()["freeform"], "value1");
+}
+
+
+// Integration tests
+
 TEST(RequestTest, sendGet) {
     CurlSession session;
     CurlCookies cookies;
