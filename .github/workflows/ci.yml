@@ -20,5 +20,5 @@ jobs:
 
       - name: Compile project with CLion
         run: |
-          cd your/project/directory
+          cd http_curl_wrapper
           clion.sh build --rebuild --force-all
