@@ -13,13 +13,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install CMake
-        run: sudo apt-get install cmake
-
-      - name: Build and test
+      - name: Install compilers and cURL
         run: |
-          mkdir build
-          cd build
-          cmake ..
-          make
-          ctest --output-on-failure
+          sudo apt update
+          sudo apt install -y cmake gcc g++ curl libssl-dev libcurl4-openssl-dev
+
+      - name: Compile project with CLion
+        run: |
+          cd your/project/directory
+          clion.sh build --rebuild --force-all
