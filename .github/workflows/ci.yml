@@ -29,12 +29,4 @@ jobs:
         name: test-results
         path: build
 
-    - name: Update README badge
-      if: ${{ always() }}
-      uses: peaceiris/actions-badges@v2
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        readme_path: README.md
-        badge_label: build
-        badge_message: ${{ job.status }}
-        color: ${{ job.status == 'success' && 'green' || 'red' }}
+   
