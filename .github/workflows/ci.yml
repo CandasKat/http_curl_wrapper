@@ -1,17 +1,18 @@
-name: CMake Build and Test
+name: CMake
 
 on: [push, pull_request]
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Set up CMake
-      uses: lukka/get-cmake@v2
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ libcurl4-openssl-dev
 
     - name: Configure CMake
       run: cmake -S . -B build
@@ -20,13 +21,4 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: ctest --test-dir build
-
-    - name: Upload test results
-      if: always()
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results
-        path: build
-
-   
+      run: cd build && ctest --output-on-failure
