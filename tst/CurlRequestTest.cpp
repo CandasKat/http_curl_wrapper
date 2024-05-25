@@ -2,13 +2,13 @@
 // Created by candas on 1/19/24.
 //
 
-#include "gtest/gtest.h"
-#include "gmock/gmock.h"
+#include <gtest/gtest.h>
+#include <gmock/gmock.h>
 #include "../src/CurlRequest.h"
-#include "../lib/googletest/googlemock/include/gmock/gmock-actions.h"
+#include <gmock/gmock-actions.h>
 
 
-// template <typename CurlRequest>
+// an interface class for mock CurlRequest
 class CurlRequestInterface {
 public:
     virtual ~CurlRequestInterface() = default;
@@ -30,7 +30,7 @@ public:
 };
 
 
-// template <typename CurlRequest>
+// a mock class implementing CurlRequestInterface
 class MockCurlRequest : public CurlRequestInterface {
 public:
     MOCK_METHOD(std::string, getUrl, (), (const, override));
@@ -49,10 +49,6 @@ public:
     MOCK_METHOD(std::unique_ptr<CurlResponse>, sendOptions, (), (override));
     MOCK_METHOD(bool, isSessionIdValid, (), (const, override));
 };
-
-
-
-
 
 
 //fixture class
@@ -123,7 +119,9 @@ TEST_F(CurlRequestTest, sendHead)
     ASSERT_TRUE(request.isSessionIdValid());
 }
 
-TEST(RequestTest, sendOptions) {
+// TEST with mock
+
+TEST(MockCurlRequest, sendOptions) {
     MockCurlRequest mockCurlRequest;
     auto mockResponse = std::make_unique<CurlResponse>(200, "headers", "body");
     auto responsePtr = mockResponse.get();
@@ -138,6 +136,8 @@ TEST(RequestTest, sendOptions) {
     ASSERT_EQ(response->getStatus(), 200);
     ASSERT_EQ(response->getBody(), "body");
     ASSERT_EQ(response->getHeadersString(), "headers");
+    ASSERT_NE(response->getBody(), "NO body");
+    ASSERT_NE(response->getHeadersString(), "NO headers");
 }
 
 

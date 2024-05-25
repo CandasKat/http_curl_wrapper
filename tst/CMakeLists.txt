@@ -3,4 +3,4 @@ file(GLOB TEST_SOURCES "*.cpp")
 include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 
 add_executable(http_curl_wrapper_tst ${TEST_SOURCES})
-target_link_libraries(http_curl_wrapper_tst gtest gtest_main http_curl_wrapper_lib ${CURL_LIBRARIES})
+target_link_libraries(http_curl_wrapper_tst gtest gtest_main gmock gmock_main http_curl_wrapper_lib ${CURL_LIBRARIES})
