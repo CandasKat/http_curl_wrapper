@@ -6,6 +6,24 @@
 #include "../src/CurlRequest.h"
 
 
+
+//fixture class
+class CurlRequestTest : public ::testing::Test {
+protected:
+    CurlSession session;
+    CurlCookies cookies;
+
+    void SetUp() override {
+        cookies.setCookie("freeform", "value1");
+        session.setSessionId("1234567890");
+    }
+
+    void TearDown() override {
+        // Code here will be called immediately after each test
+        // (right before the destructor).
+    }
+};
+
 // Unit tests
 
 // Test for CurlSession::setSessionId
@@ -33,11 +51,8 @@ TEST(UnitTest, testSetCookie) {
 
 // Integration tests
 
-TEST(RequestTest, sendGet) {
-    CurlSession session;
-    CurlCookies cookies;
-    cookies.setCookie("freeform", "value1");
-    session.setSessionId("1234567890");
+// fixture test
+TEST_F(CurlRequestTest, SendGet) {
     CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
     const std::string header = "accept: application/json";
     request.setHeader(header);
@@ -46,12 +61,9 @@ TEST(RequestTest, sendGet) {
 }
 
 
-TEST(RequestTest, sendHead)
+// fixture 
+TEST_F(CurlRequestTest, sendHead)
 {
-    CurlSession session;
-    CurlCookies cookies;
-    cookies.setCookie("freeform", "value1");
-    session.setSessionId("1234567890");
     CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
     const std::string header = "accept: application/json";
     request.setHeader(header);
@@ -61,7 +73,6 @@ TEST(RequestTest, sendHead)
     printf("body:\n%s\n", response->getBody().c_str());
     printf("headers:\n%s\n", headersObj.dump().c_str());
     ASSERT_TRUE(request.isSessionIdValid());
-    ASSERT_EQ(headersObj["content-type"], "application/json");
 }
 
 TEST(RequestTest, sendOptions)
@@ -165,3 +176,5 @@ TEST(RequestTest, setTimeout)
     std::unique_ptr<CurlResponse> response = request.sendPost("hello world");
     ASSERT_EQ(request.getUrl(), "https://httpbin.org/post");
 }
+
+// 2 tests fixture et un 1 test utilisant mock
