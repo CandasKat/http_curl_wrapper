@@ -3,7 +3,6 @@
 //
 
 #include "CurlRequest.h"
-
 #include <utility>
 #include "CurlResponse.h"
 #include "curl/curl.h"

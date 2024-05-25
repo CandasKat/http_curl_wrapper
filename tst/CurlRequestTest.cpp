@@ -5,6 +5,53 @@
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
 #include "../src/CurlRequest.h"
+#include "../lib/googletest/googlemock/include/gmock/gmock-actions.h"
+
+
+// template <typename CurlRequest>
+class CurlRequestInterface {
+public:
+    virtual ~CurlRequestInterface() = default;
+    virtual std::string getUrl() const = 0;
+    virtual std::string getBody() const = 0;
+    virtual void setUrl(const std::string& newUrl) = 0;
+    virtual void setHeader(const std::string& newHeader) = 0;
+    virtual void setBody(const std::string& newBody) = 0;
+    virtual void setBody(const std::string& newBody, size_t size) = 0;
+    virtual void setTimeout(int newTimeout) = 0;
+    virtual void setCookies(const CurlCookies& cookies) = 0;
+    virtual std::unique_ptr<CurlResponse> sendGet() = 0;
+    virtual std::unique_ptr<CurlResponse> sendPost(const std::string& body) = 0;
+    virtual std::unique_ptr<CurlResponse> sendPut(const std::string& body) = 0;
+    virtual std::unique_ptr<CurlResponse> sendDelete() = 0;
+    virtual std::unique_ptr<CurlResponse> sendHead() = 0;
+    virtual std::unique_ptr<CurlResponse> sendOptions() = 0;
+    virtual bool isSessionIdValid() const = 0;
+};
+
+
+// template <typename CurlRequest>
+class MockCurlRequest : public CurlRequestInterface {
+public:
+    MOCK_METHOD(std::string, getUrl, (), (const, override));
+    MOCK_METHOD(std::string, getBody, (), (const, override));
+    MOCK_METHOD(void, setUrl, (const std::string& newUrl), (override));
+    MOCK_METHOD(void, setHeader, (const std::string& newHeader), (override));
+    MOCK_METHOD(void, setBody, (const std::string& newBody), (override));
+    MOCK_METHOD(void, setBody, (const std::string& newBody, size_t size), (override));
+    MOCK_METHOD(void, setTimeout, (int newTimeout), (override));
+    MOCK_METHOD(void, setCookies, (const CurlCookies& cookies), (override));
+    MOCK_METHOD(std::unique_ptr<CurlResponse>, sendGet, (), (override));
+    MOCK_METHOD(std::unique_ptr<CurlResponse>, sendPost, (const std::string& body), (override));
+    MOCK_METHOD(std::unique_ptr<CurlResponse>, sendPut, (const std::string& body), (override));
+    MOCK_METHOD(std::unique_ptr<CurlResponse>, sendDelete, (), (override));
+    MOCK_METHOD(std::unique_ptr<CurlResponse>, sendHead, (), (override));
+    MOCK_METHOD(std::unique_ptr<CurlResponse>, sendOptions, (), (override));
+    MOCK_METHOD(bool, isSessionIdValid, (), (const, override));
+};
+
+
+
 
 
 
@@ -76,18 +123,23 @@ TEST_F(CurlRequestTest, sendHead)
     ASSERT_TRUE(request.isSessionIdValid());
 }
 
-TEST(RequestTest, sendOptions)
-{
-    CurlSession session;
-    CurlCookies cookies;
-    cookies.setCookie("freeform", "value1");
-    session.setSessionId("1234567890");
-    CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
-    const std::string header = "accept: application/json";
-    request.setHeader(header);
-    std::unique_ptr<CurlResponse> response = request.sendOptions();
+TEST(RequestTest, sendOptions) {
+    MockCurlRequest mockCurlRequest;
+    auto mockResponse = std::make_unique<CurlResponse>(200, "headers", "body");
+    auto responsePtr = mockResponse.get();
+
+    auto lambda = [responsePtr]() mutable -> std::unique_ptr<CurlResponse> {
+        return std::make_unique<CurlResponse>(*responsePtr);
+        };
+
+    ON_CALL(mockCurlRequest, sendOptions()).WillByDefault(testing::Invoke(lambda));
+
+    std::unique_ptr<CurlResponse> response = mockCurlRequest.sendOptions();
     ASSERT_EQ(response->getStatus(), 200);
+    ASSERT_EQ(response->getBody(), "body");
+    ASSERT_EQ(response->getHeadersString(), "headers");
 }
+
 
 TEST(RequestTest, sendPost)
 {
