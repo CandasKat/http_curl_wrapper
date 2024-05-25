@@ -32,5 +32,12 @@ For install Curl:
 .\vcpkg\vcpkg integrate install
 ```
 
+
+For install Google Test:
+
+```bash
+.\vcpkg\vcpkg install gtest:x64-windows
+```
+
 And you can use the CMakeLists.txt file for compile the project.
 For execute the project you need to use http_curl_wrapper_test.exe (tst\http_curl_wrapper_tst.exe)._
