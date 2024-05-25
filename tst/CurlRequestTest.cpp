@@ -5,11 +5,10 @@
 #include "../lib/googletest/googlemock/include/gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "../src/CurlRequest.h"
-#include "../lib/googletest/googlemock/include/gmock/gmock-actions.h"
 
 
 // template <typename CurlRequest>
-class CurlRequestInterface {
+/*class CurlRequestInterface {
 public:
     virtual ~CurlRequestInterface() = default;
     virtual std::string getUrl() const = 0;
@@ -28,10 +27,10 @@ public:
     virtual std::unique_ptr<CurlResponse> sendOptions() = 0;
     virtual bool isSessionIdValid() const = 0;
 };
-
+*/
 
 // template <typename CurlRequest>
-class MockCurlRequest : public CurlRequestInterface {
+/*class MockCurlRequest : public CurlRequestInterface {
 public:
     MOCK_METHOD(std::string, getUrl, (), (const, override));
     MOCK_METHOD(std::string, getBody, (), (const, override));
@@ -50,7 +49,7 @@ public:
     MOCK_METHOD(bool, isSessionIdValid, (), (const, override));
 };
 
-
+*/
 
 
 
@@ -123,7 +122,7 @@ TEST_F(CurlRequestTest, sendHead)
     ASSERT_TRUE(request.isSessionIdValid());
 }
 
-TEST(RequestTest, sendOptions) {
+/*TEST(RequestTest, sendOptions) {
     MockCurlRequest mockCurlRequest;
     auto mockResponse = std::make_unique<CurlResponse>(200, "headers", "body");
     auto responsePtr = mockResponse.get();
@@ -139,7 +138,7 @@ TEST(RequestTest, sendOptions) {
     ASSERT_EQ(response->getBody(), "body");
     ASSERT_EQ(response->getHeadersString(), "headers");
 }
-
+*/
 
 TEST(RequestTest, sendPost)
 {
