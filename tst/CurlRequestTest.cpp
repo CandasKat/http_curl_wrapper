@@ -52,7 +52,7 @@ public:
 
 
 //fixture class
-class CurlRequestTest : public ::testing::Test {
+class FixtureForCurlRequest : public ::testing::Test {
 protected:
     CurlSession session;
     CurlCookies cookies;
@@ -96,7 +96,7 @@ TEST(UnitTest, testSetCookie) {
 // Integration tests
 
 // fixture test
-TEST_F(CurlRequestTest, SendGet) {
+TEST_F(FixtureForCurlRequest, SendGet) {
     CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
     const std::string header = "accept: application/json";
     request.setHeader(header);
@@ -106,7 +106,7 @@ TEST_F(CurlRequestTest, SendGet) {
 
 
 // fixture 
-TEST_F(CurlRequestTest, sendHead)
+TEST_F(FixtureForCurlRequest, sendHead)
 {
     CurlRequest request(session, "https://httpbin.org/get", "", cookies, 10);
     const std::string header = "accept: application/json";
@@ -114,8 +114,6 @@ TEST_F(CurlRequestTest, sendHead)
     std::unique_ptr<CurlResponse> response = request.sendHead();
     ASSERT_EQ(response->getStatus(), 200);
     json headersObj = response->getHeaders();
-    printf("body:\n%s\n", response->getBody().c_str());
-    printf("headers:\n%s\n", headersObj.dump().c_str());
     ASSERT_TRUE(request.isSessionIdValid());
 }
 
@@ -130,7 +128,7 @@ TEST(MockCurlRequest, sendOptions) {
         return std::make_unique<CurlResponse>(*responsePtr);
         };
 
-    ON_CALL(mockCurlRequest, sendOptions()).WillByDefault(testing::Invoke(lambda));
+    EXPECT_CALL(mockCurlRequest, sendOptions()).WillOnce(testing::Invoke(lambda));
 
     std::unique_ptr<CurlResponse> response = mockCurlRequest.sendOptions();
     ASSERT_EQ(response->getStatus(), 200);
@@ -141,7 +139,7 @@ TEST(MockCurlRequest, sendOptions) {
 }
 
 
-TEST(RequestTest, sendPost)
+TEST(IntegrationTest, sendPost)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -154,7 +152,7 @@ TEST(RequestTest, sendPost)
     ASSERT_EQ(response->getStatus(), 200);
 }
 
-TEST(RequestTest, sendPut)
+TEST(IntegrationTest, sendPut)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -167,7 +165,7 @@ TEST(RequestTest, sendPut)
     ASSERT_EQ(response->getStatus(), 200);
 }
 
-TEST(RequestTest, sendDelete)
+TEST(IntegrationTest, sendDelete)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -180,7 +178,7 @@ TEST(RequestTest, sendDelete)
     ASSERT_EQ(response->getStatus(), 200);
 }
 
-TEST(RequestTest, sendPatch)
+TEST(IntegrationTest, sendPatch)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -193,7 +191,7 @@ TEST(RequestTest, sendPatch)
     ASSERT_EQ(response->getStatus(), 200);
 }
 
-TEST(RequestTest, setUrl)
+TEST(IntegrationTest, setUrl)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -206,7 +204,7 @@ TEST(RequestTest, setUrl)
     ASSERT_EQ(request.getUrl(), "https://httpbin.org/post");
 }
 
-TEST(RequestTest, setBody)
+TEST(IntegrationTest, setBody)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -218,7 +216,7 @@ TEST(RequestTest, setBody)
     ASSERT_EQ(request.getBody(), "hello world");
 }
 
-TEST(RequestTest, setTimeout)
+TEST(IntegrationTest, setTimeout)
 {
     CurlSession session;
     CurlCookies cookies;
@@ -230,4 +228,3 @@ TEST(RequestTest, setTimeout)
     ASSERT_EQ(request.getUrl(), "https://httpbin.org/post");
 }
 
-// 2 tests fixture et un 1 test utilisant mock
