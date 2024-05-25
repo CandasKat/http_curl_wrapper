@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<results version="2">
+    <cppcheck version="2.7"/>
+    <errors>
+        <error id="preprocessorErrorDirective" severity="error" msg="failed to evaluate #if condition" verbose="failed to evaluate #if condition">
+            <location file="lib/json-develop/single_include/nlohmann/json.hpp" line="2403" column="0"/>
+        </error>
+    </errors>
+</results>
