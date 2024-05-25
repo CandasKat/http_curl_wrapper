@@ -2,7 +2,6 @@
 // Created by candas on 1/19/24.
 //
 
-#include "../lib/googletest/googlemock/include/gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "../src/CurlRequest.h"
 
