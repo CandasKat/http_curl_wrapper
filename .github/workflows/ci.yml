@@ -1,24 +1,33 @@
-name: CI
+# cmake_test.yml
+name: CMake Build and Test
 
-on:
-  push:
-    branches:
-      - master
+on: [push, pull_request]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Install compilers and cURL
-        run: |
-          sudo apt update
-          sudo apt install -y cmake gcc g++ curl libssl-dev libcurl4-openssl-dev
+    - name: Set up CMake
+      uses: lukka/get-cmake@v3
 
-      - name: Compile project with CLion
-        run: |
-          cd http_curl_wrapper
-          clion.sh build --rebuild --force-all
+    - name: Configure CMake
+      run: cmake -S . -B build
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Run tests
+      run: ctest --test-dir build
+
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: build
+
+  
