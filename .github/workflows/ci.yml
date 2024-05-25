@@ -27,4 +27,4 @@ jobs:
       run: cmake --build build --config Debug
 
     - name: Run tests
-      run: .\build\tst\Debug\http_curl_wrapper_test.exe
+      run: .\build\tst\Debug\http_curl_wrapper_tst.exe
