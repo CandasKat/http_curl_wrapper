@@ -36,6 +36,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install CURL
+        run: |
+          choco install curl
+          curl --version
+
+
       - name: Configure CMake
         run: cmake -B ${{ env.build }}
 
