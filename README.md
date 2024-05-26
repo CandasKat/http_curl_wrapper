@@ -1,3 +1,5 @@
+[![CMake](https://github.com/CandasKat/http_curl_wrapper/actions/workflows/msvc.yml/badge.svg)](https://github.com/CandasKat/http_curl_wrapper/actions/workflows/msvc.yml)
+
 I recommend to use Clion for compile the project.
 
 For install compilers:
