@@ -1,14 +1,14 @@
 [![CMake](https://github.com/CandasKat/http_curl_wrapper/actions/workflows/msvc.yml/badge.svg)](https://github.com/CandasKat/http_curl_wrapper/actions/workflows/msvc.yml)
 
-I recommend to use Clion for compile the project.
 
-For install compilers:
+
+Pour installer les compilateurs :
 
 ```bash
 sudo apt install cmake gcc g++
 ```
 
-For install cURL:
+installation de curl
 
 ```bash
 sudo apt install curl
@@ -16,10 +16,11 @@ sudo apt install libssl-dev libcurl4-openssl-dev
 ```
 
 
-For Windows:
-I recommend to use Visual Studio for compile the project, and you can use vcpkg for install the dependencies.
+Pour Windows :
 
-For install vcpkg:
+On recommande d'utiliser Visual Studio pour compiler le projet et vous pouvez utiliser vcpkg pour installer les dépendances.
+
+Pour installer vcpkg:
 
 ```bash
 git clone https://github.com/microsoft/vcpkg.git
@@ -27,7 +28,7 @@ git clone https://github.com/microsoft/vcpkg.git
 ```
 
 
-For install Curl:
+Pour installer Curl:
 
 ```bash
 .\vcpkg\vcpkg install curl:x64-windows
@@ -35,14 +36,14 @@ For install Curl:
 ```
 
 
-For install Google Test:
+Pour installer Google Test:
 
 ```bash
 .\vcpkg\vcpkg install gtest:x64-windows
 ```
 
-And you can use the CMakeLists.txt file for compile the project.
-For execute the project you need to use http_curl_wrapper_test.exe (tst\http_curl_wrapper_tst.exe)._
+Et vous pouvez utilisé le fichier CMakeLists.txt pour compiler le projet.
+Pour exécuter le projet il faut utiliser http_curl_wrapper_test.exe (tst\http_curl_wrapper_tst.exe).
 
 Analyse de Code
 
