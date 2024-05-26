@@ -45,6 +45,7 @@ And you can use the CMakeLists.txt file for compile the project.
 For execute the project you need to use http_curl_wrapper_test.exe (tst\http_curl_wrapper_tst.exe)._
 
 Analyse de Code
+
 Nous avons effectué deux analyses de code distinctes en utilisant l'outil cppcheck en raison de problèmes pour trouver les fichiers d'en-tête de certaines bibliothèques tierces. Les résultats de ces analyses sont documentés comme suit :
 
 Analyse Complète Incluant les Bibliothèques Tierces :
@@ -61,6 +62,7 @@ Cette analyse est plus ciblée et nous permet de nous concentrer sur la qualité
 
 
 Conclusions
+
 Sur la base de ces analyses, nous avons tiré les conclusions suivantes :
 Structure Générale : Notre application semble bien structurée dans l'ensemble.
 Bibliothèques Tierces : Il est crucial de s'assurer que les bibliothèques tierces sont fiables et maintenues à jour.
