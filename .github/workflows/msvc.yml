@@ -4,7 +4,6 @@ on: [push, pull_request]
 
 jobs:
   build-linux:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -19,9 +18,10 @@ jobs:
     - name: Install cURL
       run: |
         sudo apt-get install -y curl
-        
         sudo apt-get install -y libssl-dev libcurl4-openssl-dev
-        sudo apt-get install libgtest-dev
+
+    - name: Create build directory
+      run: mkdir -p build
 
     - name: Configure CMake
       run: cmake -S . -B build
@@ -30,4 +30,4 @@ jobs:
       run: cmake --build build
 
     - name: Run tests
-      run: cd build && ctest --output-on-failure
+      run: ./build/tst/http_curl_wrapper_tst
